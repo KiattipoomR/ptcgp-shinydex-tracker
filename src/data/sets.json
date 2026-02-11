@@ -1,0 +1,33 @@
+[
+  {
+    "id": "A2b",
+    "name": {
+      "en": "Genetic Apex",
+      "ja": "頂点遺伝子"
+    },
+    "subsets": [
+      {
+        "id": "A2b_1",
+        "name": {
+          "en": "Genetic Apex 1",
+          "ja": "頂点遺伝子1"
+        }
+      },
+      {
+        "id": "A2b_2",
+        "name": {
+          "en": "Genetic Apex 2",
+          "ja": "頂点遺伝子2"
+        }
+      },
+      {
+        "id": "A2b_3",
+        "name": {
+          "en": "Genetic Apex 3",
+          "ja": "頂点遺伝子3"
+        }
+      }
+    ]
+  }
+]
+

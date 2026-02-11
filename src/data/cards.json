@@ -1,0 +1,39 @@
+[
+  {
+    "id": 103,
+    "setId": "A2b",
+    "subsetId": "A2b_1",
+    "rarity": "S",
+    "pokedexNumber": 417,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005060_00_PACHIRISU_S.webp",
+    "name": {
+      "en": "Pachirisu",
+      "ja": "パチリス"
+    }
+  },
+  {
+    "id": 108,
+    "setId": "A2b",
+    "subsetId": "A2b_2",
+    "rarity": "SSR",
+    "pokedexNumber": 6,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005290_01_LIZARDONex_SSR.webp",
+    "name": {
+      "en": "Charizard ex",
+      "ja": "リザードン ex"
+    }
+  },
+  {
+    "id": 110,
+    "setId": "A2b",
+    "subsetId": "A2b_3",
+    "rarity": "SSR",
+    "pokedexNumber": 448,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005580_01_LUCARIOex_SSR.webp",
+    "name": {
+      "en": "Lucario ex",
+      "ja": "ルカリオ ex"
+    }
+  }
+]
+

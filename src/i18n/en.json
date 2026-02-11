@@ -1,0 +1,24 @@
+{
+  "app": {
+    "title": "TCG Pocket Shinydex Tracker"
+  },
+  "header": {
+    "language_en": "English",
+    "language_ja": "日本語",
+    "summary": "{owned} / {total} shiny cards owned"
+  },
+  "sets": {
+    "all": "All sets",
+    "subset_all": "All subsets"
+  },
+  "filters": {
+    "search_label": "Search",
+    "search_placeholder": "Search by name or Pok\u00e9dex #",
+    "missing_only": "Missing only"
+  },
+  "collection": {
+    "owned": "Owned",
+    "not_owned": "Not owned"
+  }
+}
+
