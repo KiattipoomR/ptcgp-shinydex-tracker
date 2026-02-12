@@ -5,6 +5,7 @@
   "header": {
     "language_en": "English",
     "language_ja": "日本語",
+    "language_label": "Language",
     "summary": "{owned} / {total} shiny cards owned"
   },
   "sets": {
@@ -14,11 +15,19 @@
   "filters": {
     "search_label": "Search",
     "search_placeholder": "Search by name or Pok\u00e9dex #",
-    "missing_only": "Missing only"
+    "missing_only": "Missing only",
+    "rarity_label": "Rarity",
+    "rarity_all": "All rarities",
+    "sort_label": "Sort",
+    "sort_by_pokedex": "Pok\u00e9dex #",
+    "sort_by_name": "Name",
+    "sort_by_rarity": "Rarity",
+    "sort_dir_asc": "Asc",
+    "sort_dir_desc": "Desc",
+    "reset_sort": "Reset"
   },
   "collection": {
     "owned": "Owned",
     "not_owned": "Not owned"
   }
 }
-

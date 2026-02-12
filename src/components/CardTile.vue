@@ -18,13 +18,28 @@ const displayName = computed(() =>
   locale.value === 'ja' ? props.card.name.ja : props.card.name.en,
 )
 
-function onToggle() {
+function onToggle(event?: Event) {
+  if (event) event.stopPropagation()
   emit('toggle')
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault()
+    emit('toggle')
+  }
 }
 </script>
 
 <template>
-  <article class="card">
+  <article
+    :class="['card', { owned: owned, missing: !owned }]"
+    role="button"
+    :aria-pressed="owned"
+    tabindex="0"
+    @click="onToggle"
+    @keydown="onKeyDown"
+  >
     <div class="image-wrapper">
       <img :src="card.imageUrl" :alt="displayName" loading="lazy" />
       <span class="rarity-tag">
@@ -37,14 +52,16 @@ function onToggle() {
         {{ displayName }}
       </h3>
       <p class="meta">
-        #{{ card.pokedexNumber }} · {{ card.setId }}<span v-if="card.subsetId"> / {{ card.subsetId }}</span>
+        #{{ card.pokedexNumber }} · {{ card.setId
+        }}<span v-if="card.subsetId"> / {{ card.subsetId }}</span>
       </p>
 
       <button
         type="button"
         class="owned-button"
         :class="{ owned }"
-        @click="onToggle"
+        @click.stop="onToggle"
+        :aria-pressed="owned"
       >
         <span class="dot" />
         <span class="label">
@@ -62,8 +79,13 @@ function onToggle() {
   border-radius: 1rem;
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.6);
-  background: radial-gradient(circle at top, rgba(251, 191, 36, 0.2), transparent),
+  background:
+    radial-gradient(circle at top, rgba(251, 191, 36, 0.2), transparent),
     radial-gradient(circle at bottom, rgba(59, 130, 246, 0.18), transparent);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+  cursor: pointer;
 }
 
 .image-wrapper {
@@ -125,6 +147,29 @@ function onToggle() {
     border-color 0.15s ease-out;
 }
 
+.card:focus {
+  outline: 3px solid rgba(59, 130, 246, 0.18);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.card.missing {
+  filter: grayscale(80%) contrast(0.9);
+  opacity: 0.72;
+}
+
+.card.missing .rarity-tag {
+  opacity: 0.7;
+}
+
+.card.missing .owned-button {
+  opacity: 0.95;
+}
+
 .owned-button .dot {
   width: 0.55rem;
   height: 0.55rem;
@@ -141,4 +186,3 @@ function onToggle() {
   background-color: rgba(34, 197, 94, 0.95);
 }
 </style>
-

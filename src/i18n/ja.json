@@ -5,6 +5,7 @@
   "header": {
     "language_en": "English",
     "language_ja": "日本語",
+    "language_label": "\u8a00\u8a9e",
     "summary": "色違い {total} \u679a\u4e2d {owned} \u679a\u6240\u6301"
   },
   "sets": {
@@ -14,11 +15,19 @@
   "filters": {
     "search_label": "\u691c\u7d22",
     "search_placeholder": "\u540d\u524d\u307e\u305f\u306f\u56fd\u756a\u3067\u691c\u7d22",
-    "missing_only": "\u672a\u6240\u6301\u306e\u307f"
+    "missing_only": "\u672a\u6240\u6301\u306e\u307f",
+    "rarity_label": "\u73fe\u72b6",
+    "rarity_all": "\u5168\u3066",
+    "sort_label": "\u30bd\u30fc\u30c8",
+    "sort_by_pokedex": "\u56fd\u756a",
+    "sort_by_name": "\u540d\u524d",
+    "sort_by_rarity": "\u73fe\u72b6",
+    "sort_dir_asc": "\u5341\u4e00",
+    "sort_dir_desc": "\u4e0b\u3078",
+    "reset_sort": "\u30ea\u30bb\u30c3\u30c8"
   },
   "collection": {
     "owned": "\u6240\u6301",
     "not_owned": "\u672a\u6240\u6301"
   }
 }
-

@@ -17,30 +17,33 @@ const selectedSubsetId = ref<string>('all')
 const searchQuery = ref<string>('')
 const missingOnly = ref<boolean>(false)
 
+const selectedRarity = ref<string>('all')
+const sortBy = ref<string>('pokedex')
+const sortDir = ref<'asc' | 'desc'>('asc')
+
 const filteredCards = computed<Card[]>(() => {
   const query = searchQuery.value.trim().toLowerCase()
   const currentLocale = (locale.value === 'ja' ? 'ja' : 'en') as 'en' | 'ja'
-
-  return cards.filter((card) => {
+  const filtered = cards.filter((card) => {
     if (selectedSetId.value !== 'all' && card.setId !== selectedSetId.value) {
       return false
     }
 
-    if (
-      selectedSubsetId.value !== 'all' &&
-      card.subsetId !== selectedSubsetId.value
-    ) {
+    if (selectedSubsetId.value !== 'all' && card.subsetId !== selectedSubsetId.value) {
       return false
     }
 
     if (query) {
-      const name =
-        currentLocale === 'ja' ? card.name.ja.toLowerCase() : card.name.en.toLowerCase()
+      const name = currentLocale === 'ja' ? card.name.ja.toLowerCase() : card.name.en.toLowerCase()
       const matchesName = name.includes(query)
       const matchesDex = card.pokedexNumber.toString().includes(query)
       if (!matchesName && !matchesDex) {
         return false
       }
+    }
+
+    if (selectedRarity.value && selectedRarity.value !== 'all') {
+      if (card.rarity !== selectedRarity.value) return false
     }
 
     const key = makeCardKey({
@@ -56,6 +59,28 @@ const filteredCards = computed<Card[]>(() => {
 
     return true
   })
+
+  // Sorting
+  const rarityOrder = Array.from(new Set(cards.map((c) => c.rarity))).sort()
+
+  const sorted = filtered.slice().sort((a, b) => {
+    let cmp = 0
+    if (sortBy.value === 'pokedex') {
+      cmp = a.pokedexNumber - b.pokedexNumber
+    } else if (sortBy.value === 'name') {
+      const an = currentLocale === 'ja' ? a.name.ja : a.name.en
+      const bn = currentLocale === 'ja' ? b.name.ja : b.name.en
+      cmp = an.localeCompare(bn)
+    } else if (sortBy.value === 'rarity') {
+      const ai = rarityOrder.indexOf(a.rarity)
+      const bi = rarityOrder.indexOf(b.rarity)
+      cmp = ai - bi
+    }
+
+    return sortDir.value === 'asc' ? cmp : -cmp
+  })
+
+  return sorted
 })
 
 const gridItems = computed(() =>
@@ -73,6 +98,10 @@ const gridItems = computed(() =>
     }
   }),
 )
+
+const rarityOptions = computed(() => {
+  return Array.from(new Set(cards.map((c) => c.rarity))).sort()
+})
 
 const totalCards = computed(() => cards.length)
 const ownedCards = computed(() => {
@@ -100,12 +129,16 @@ function handleToggleOwned(key: string) {
         :sets="sets"
         v-model:selected-set-id="selectedSetId"
         v-model:selected-subset-id="selectedSubsetId"
-        :current-locale="(locale as 'en' | 'ja')"
+        :current-locale="locale as 'en' | 'ja'"
       />
 
       <CardFilters
         v-model:search-query="searchQuery"
         v-model:missing-only="missingOnly"
+        :rarity-options="rarityOptions"
+        v-model:selected-rarity="selectedRarity"
+        v-model:sort-by="sortBy"
+        v-model:sort-dir="sortDir"
       />
     </section>
 
@@ -135,4 +168,3 @@ function handleToggleOwned(key: string) {
   min-height: 200px;
 }
 </style>
-

@@ -1,11 +1,11 @@
-export type Theme = 'system' | 'light' | 'dark'
+export type Theme = 'light' | 'dark'
 
 export const THEME_STORAGE_KEY = 'shinydex:theme'
 
 function readStoredTheme(): Theme | null {
   if (typeof window === 'undefined') return null
   const raw = window.localStorage.getItem(THEME_STORAGE_KEY)
-  if (raw === 'light' || raw === 'dark' || raw === 'system') {
+  if (raw === 'light' || raw === 'dark') {
     return raw
   }
   return null
@@ -27,7 +27,17 @@ export function applyTheme(theme: Theme): void {
 
 export function initTheme(): Theme {
   const stored = readStoredTheme()
-  const theme: Theme = stored ?? 'system'
+  let theme: Theme
+
+  if (stored) {
+    theme = stored
+  } else if (typeof window !== 'undefined' && 'matchMedia' in window) {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    theme = prefersDark ? 'dark' : 'light'
+  } else {
+    theme = 'light'
+  }
+
   applyTheme(theme)
   return theme
 }
@@ -38,4 +48,3 @@ export function setTheme(theme: Theme): void {
   }
   applyTheme(theme)
 }
-

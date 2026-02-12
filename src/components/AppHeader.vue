@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const { t, locale } = useI18n()
 
-const currentTheme = ref<Theme>('system')
+const currentTheme = ref<Theme>('light')
 
 const summaryText = computed(() =>
   t('header.summary', {
@@ -51,33 +51,18 @@ onMounted(() => {
 
     <div class="controls">
       <div class="language-toggle" aria-label="Language">
-        <button
-          type="button"
-          class="pill-button"
-          :class="{ active: locale === 'en' }"
-          @click="switchLanguage('en')"
+        <label class="visually-hidden">{{ t('header.language_label') }}</label>
+        <select
+          class="lang-select"
+          :value="locale"
+          @change="(e) => switchLanguage((e.target as HTMLSelectElement).value as 'en' | 'ja')"
         >
-          {{ t('header.language_en') }}
-        </button>
-        <button
-          type="button"
-          class="pill-button"
-          :class="{ active: locale === 'ja' }"
-          @click="switchLanguage('ja')"
-        >
-          {{ t('header.language_ja') }}
-        </button>
+          <option value="en">{{ t('header.language_en') }}</option>
+          <option value="ja">{{ t('header.language_ja') }}</option>
+        </select>
       </div>
 
       <div class="theme-toggle" aria-label="Theme">
-        <button
-          type="button"
-          class="pill-button"
-          :class="{ active: currentTheme === 'system' }"
-          @click="switchTheme('system')"
-        >
-          Sys
-        </button>
         <button
           type="button"
           class="pill-button"
@@ -164,6 +149,26 @@ onMounted(() => {
   background-color: rgba(15, 23, 42, 0.12);
 }
 
+.lang-select {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  padding: 0.25rem 0.6rem;
+  background-color: rgba(15, 23, 42, 0.02);
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (max-width: 640px) {
   .app-header {
     flex-direction: column;
@@ -171,4 +176,3 @@ onMounted(() => {
   }
 }
 </style>
-
