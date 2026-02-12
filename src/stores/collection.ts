@@ -11,10 +11,16 @@ export const loadOwned = (): OwnedByKey => {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return {}
+
     const parsed = JSON.parse(raw)
-    if (parsed && typeof parsed === 'object') {
-      return parsed as OwnedByKey
-    }
+    if (!Array.isArray(parsed)) return {}
+
+    const out: OwnedByKey = {}
+    parsed.forEach((key: string) => {
+      out[key] = true
+    })
+
+    return out
   } catch {
     // ignore parsing errors and fall back to empty
   }
@@ -24,7 +30,8 @@ export const loadOwned = (): OwnedByKey => {
 
 export const saveOwned = (data: OwnedByKey) => {
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+    const keys = Object.keys(data).filter((k) => data[k])
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(keys))
   } catch {
     // ignore write errors
   }
