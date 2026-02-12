@@ -163,7 +163,7 @@ const handleToggleOwned = (key: string) => {
   flex-direction: column;
   gap: 1.5rem;
   padding: 1.5rem 1rem 2rem;
-  max-width: 1120px;
+  max-width: 960px;
   margin: 0 auto;
 }
 

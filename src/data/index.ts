@@ -23,3 +23,16 @@ export const makeCardKey = (parts: CardKeyParts): string => {
 export const getLocalizedName = (name: LocalizedText, locale: WebLocale): string => {
   return name[locale] || name[WebLocale.English]
 }
+
+export const getLocalizedSetName = (setId: string, locale: WebLocale, subsetId?: string) => {
+  const set = sets.find((s) => s.id === setId)
+  const setName = set ? getLocalizedName(set.name, locale) : setId
+
+  let subsetName: string | undefined = undefined
+  if (subsetId && set && Array.isArray(set.subsets)) {
+    const subset = set.subsets.find((ss) => ss.id === subsetId)
+    if (subset) subsetName = getLocalizedName(subset.name, locale)
+  }
+
+  return { setName, subsetName }
+}

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 
-import { getLocalizedName, WebLocale } from '@/data'
+import { getLocalizedName, getLocalizedSetName, WebLocale } from '@/data'
 import type { Card } from '@/data/types'
 
 const props = defineProps<{
@@ -15,37 +15,54 @@ const emit = defineEmits<{
   (e: 'toggle'): void
 }>()
 
-const { t, locale } = useI18n()
+const { locale } = useI18n()
 
 const displayName = computed(() => getLocalizedName(props.card.name, locale.value as WebLocale))
+
+const setNames = computed(() =>
+  getLocalizedSetName(props.card.setId, locale.value as WebLocale, props.card.subsetId),
+)
+
+const imageError = ref(false)
+const hasImage = computed(() => !!props.card.imageUrl && !imageError.value)
 
 const onToggle = (event?: Event) => {
   if (event) event.stopPropagation()
   emit('toggle')
 }
-
-const onKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault()
-    emit('toggle')
-  }
-}
 </script>
 
 <template>
-  <article
+  <button
     :class="['card', { owned: owned, missing: !owned }]"
     role="button"
     :aria-pressed="owned"
     tabindex="0"
     @click="onToggle"
-    @keydown="onKeyDown"
   >
     <div class="image-wrapper">
-      <img :src="card.imageUrl" :alt="displayName" loading="lazy" />
-      <span class="rarity-tag">
-        {{ card.rarity }}
-      </span>
+      <div class="image-container">
+        <img
+          v-if="hasImage"
+          :src="card.imageUrl"
+          :alt="displayName"
+          loading="lazy"
+          @error="imageError = true"
+          @load="imageError = false"
+        />
+
+        <div v-else class="image-placeholder" aria-hidden="true">
+          <div class="placeholder-inner">
+            <span class="placeholder-diamond">✦</span>
+          </div>
+        </div>
+
+        <div class="image-overlay" aria-hidden="true"></div>
+        <span class="dex-badge">#{{ card.pokedexNumber }}</span>
+        <span class="rarity-tag">
+          {{ card.rarity }}
+        </span>
+      </div>
     </div>
 
     <div class="content">
@@ -53,24 +70,11 @@ const onKeyDown = (event: KeyboardEvent) => {
         {{ displayName }}
       </h3>
       <p class="meta">
-        #{{ card.pokedexNumber }} · {{ card.setId
-        }}<span v-if="card.subsetId"> / {{ card.subsetId }}</span>
+        <strong>{{ setNames.setName }}</strong>
+        <span v-if="setNames.subsetName"> · {{ setNames.subsetName }}</span>
       </p>
-
-      <button
-        type="button"
-        class="owned-button"
-        :class="{ owned }"
-        @click.stop="onToggle"
-        :aria-pressed="owned"
-      >
-        <span class="dot" />
-        <span class="label">
-          {{ owned ? t('collection.owned') : t('collection.not_owned') }}
-        </span>
-      </button>
     </div>
-  </article>
+  </button>
 </template>
 
 <style scoped>
@@ -79,10 +83,8 @@ const onKeyDown = (event: KeyboardEvent) => {
   flex-direction: column;
   border-radius: 1rem;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  background:
-    radial-gradient(circle at top, rgba(251, 191, 36, 0.2), transparent),
-    radial-gradient(circle at bottom, rgba(59, 130, 246, 0.18), transparent);
+  border: 1px solid var(--color-border);
+  background: linear-gradient(135deg, var(--card-bg-top), var(--card-bg-bottom));
   transition:
     transform 0.12s ease,
     box-shadow 0.12s ease;
@@ -91,15 +93,86 @@ const onKeyDown = (event: KeyboardEvent) => {
 
 .image-wrapper {
   position: relative;
-  aspect-ratio: 3 / 4;
-  background: radial-gradient(circle, rgba(148, 163, 184, 0.3), transparent);
+  aspect-ratio: 5 / 7;
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.06), transparent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-top-left-radius: 0.85rem;
+  border-top-right-radius: 0.85rem;
+  overflow: hidden;
 }
 
-.image-wrapper img {
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-container img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--card-overlay-gradient);
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    background-color 0.18s ease;
+  z-index: 0;
+}
+
+.card:hover .image-overlay,
+.card:focus .image-overlay {
+  opacity: 1;
+}
+
+.card.owned .image-overlay {
+  background: var(--card-owned-overlay), var(--card-overlay-gradient);
+  opacity: 1;
+}
+
+.dex-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.08rem 0.35rem;
+  border-radius: 0.35rem;
+  font-size: 0.72rem;
+  background: rgba(10, 10, 10, 0.5);
+  color: var(--accent-yellow);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 3;
+  pointer-events: none;
+  font-weight: 800;
+}
+
+.image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02));
+  z-index: 1;
+}
+
+.placeholder-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-diamond {
+  font-size: 28px;
+  color: var(--placeholder-fg);
 }
 
 .rarity-tag {
@@ -109,8 +182,16 @@ const onKeyDown = (event: KeyboardEvent) => {
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
   font-size: 0.7rem;
-  background: rgba(15, 23, 42, 0.85);
-  color: #f9fafb;
+  background: var(--rarity-tag-bg);
+  color: var(--rarity-text);
+}
+
+.name {
+  color: var(--color-heading);
+}
+
+.meta {
+  color: var(--color-text);
 }
 
 .content {
@@ -128,62 +209,25 @@ const onKeyDown = (event: KeyboardEvent) => {
 .meta {
   font-size: 0.8rem;
   opacity: 0.85;
-}
-
-.owned-button {
-  margin-top: 0.25rem;
-  align-self: flex-start;
-  display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.8);
-  padding: 0.2rem 0.6rem;
-  font-size: 0.8rem;
-  background-color: rgba(15, 23, 42, 0.02);
-  color: inherit;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease-out,
-    border-color 0.15s ease-out;
 }
 
 .card:focus {
-  outline: 3px solid rgba(59, 130, 246, 0.18);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  outline: 3px solid var(--card-focus-outline);
+  box-shadow: 0 6px 18px var(--card-hover-shadow-color);
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px var(--card-hover-shadow-color);
 }
 
 .card.missing {
-  filter: grayscale(80%) contrast(0.9);
+  filter: var(--card-missing-filter);
   opacity: 0.72;
 }
 
 .card.missing .rarity-tag {
   opacity: 0.7;
-}
-
-.card.missing .owned-button {
-  opacity: 0.95;
-}
-
-.owned-button .dot {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 999px;
-  background-color: rgba(248, 250, 252, 0.6);
-}
-
-.owned-button.owned {
-  background-color: rgba(22, 163, 74, 0.16);
-  border-color: rgba(34, 197, 94, 0.9);
-}
-
-.owned-button.owned .dot {
-  background-color: rgba(34, 197, 94, 0.95);
 }
 </style>
