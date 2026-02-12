@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { LANGUAGE_STORAGE_KEY } from '../i18n'
-import type { Theme } from '../theme'
-import { initTheme, setTheme } from '../theme'
+import { useI18n, type Locale } from 'vue-i18n'
+import { initTheme, setTheme } from '@/theme'
+import { LANGUAGE_STORAGE_KEY, WebTheme } from '@/data/constants'
 
 const props = defineProps<{
   totalCards: number
@@ -12,7 +11,7 @@ const props = defineProps<{
 
 const { t, locale } = useI18n()
 
-const currentTheme = ref<Theme>('light')
+const currentTheme = ref<WebTheme | undefined>()
 
 const summaryText = computed(() =>
   t('header.summary', {
@@ -21,14 +20,12 @@ const summaryText = computed(() =>
   }),
 )
 
-function switchLanguage(lang: 'en' | 'ja') {
+const switchLanguage = (lang: Locale) => {
   locale.value = lang
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, lang)
-  }
+  window.localStorage.setItem(LANGUAGE_STORAGE_KEY, lang)
 }
 
-function switchTheme(theme: Theme) {
+const switchTheme = (theme: WebTheme) => {
   currentTheme.value = theme
   setTheme(theme)
 }
@@ -66,16 +63,16 @@ onMounted(() => {
         <button
           type="button"
           class="pill-button"
-          :class="{ active: currentTheme === 'light' }"
-          @click="switchTheme('light')"
+          :class="{ active: currentTheme === WebTheme.Light }"
+          @click="switchTheme(WebTheme.Light)"
         >
           ☀️
         </button>
         <button
           type="button"
           class="pill-button"
-          :class="{ active: currentTheme === 'dark' }"
-          @click="switchTheme('dark')"
+          :class="{ active: currentTheme === WebTheme.Dark }"
+          @click="switchTheme(WebTheme.Dark)"
         >
           🌙
         </button>

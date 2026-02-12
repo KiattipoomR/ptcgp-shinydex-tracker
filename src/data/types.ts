@@ -1,17 +1,15 @@
-export type LocalizedText = {
-  en: string
-  ja: string
-}
-
-export type Subset = {
-  id: string
-  name: LocalizedText
-}
+import type { WebLocale } from './constants'
 
 export type Set = {
   id: string
   name: LocalizedText
   subsets?: Subset[]
+  index?: number
+}
+
+export type Subset = {
+  id: string
+  name: LocalizedText
 }
 
 export type Card = {
@@ -30,3 +28,5 @@ export type CardKeyParts = {
   id: number
 }
 
+export type LocalizedText = Record<Exclude<WebLocale, WebLocale.English>, string> &
+  Record<WebLocale.English, string>

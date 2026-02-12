@@ -1,32 +1,26 @@
 import { createI18n } from 'vue-i18n'
-import en from './en.json'
-import ja from './ja.json'
+import en from '@/i18n/en.json'
+import ja from '@/i18n/ja.json'
+import { LANGUAGE_STORAGE_KEY, WebLocale } from '@/data/constants'
 
-export const LANGUAGE_STORAGE_KEY = 'shinydex:language'
-
-function resolveInitialLocale(): 'en' | 'ja' {
-  if (typeof window !== 'undefined') {
-    const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
-    if (stored === 'en' || stored === 'ja') {
-      return stored
-    }
-
-    if (typeof navigator !== 'undefined') {
-      const lang = navigator.language.toLowerCase()
-      if (lang.startsWith('ja')) return 'ja'
-    }
+function resolveInitialLocale(): WebLocale {
+  const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY) as WebLocale | null
+  if (stored && Object.values(WebLocale).includes(stored)) {
+    return stored
   }
 
-  return 'en'
+  const lang = (navigator.language.split('-')[0] ?? '') as WebLocale
+  if (lang && Object.values(WebLocale).includes(lang)) return lang
+
+  return WebLocale.English
 }
 
 export const i18n = createI18n({
   legacy: false,
   locale: resolveInitialLocale(),
-  fallbackLocale: 'en',
+  fallbackLocale: WebLocale.English,
   messages: {
     en,
     ja,
   },
 })
-

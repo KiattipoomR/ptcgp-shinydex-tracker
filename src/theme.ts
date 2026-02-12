@@ -1,50 +1,36 @@
-export type Theme = 'light' | 'dark'
+import { THEME_STORAGE_KEY, WebTheme } from '@/data/constants'
 
-export const THEME_STORAGE_KEY = 'shinydex:theme'
-
-function readStoredTheme(): Theme | null {
-  if (typeof window === 'undefined') return null
-  const raw = window.localStorage.getItem(THEME_STORAGE_KEY)
-  if (raw === 'light' || raw === 'dark') {
-    return raw
-  }
-  return null
-}
-
-export function applyTheme(theme: Theme): void {
-  if (typeof document === 'undefined') return
-
-  const root = document.documentElement
-  root.classList.remove('theme-light', 'theme-dark')
-
-  if (theme === 'light') {
-    root.classList.add('theme-light')
-  } else if (theme === 'dark') {
-    root.classList.add('theme-dark')
-  }
-  // system: no explicit class, let prefers-color-scheme decide
-}
-
-export function initTheme(): Theme {
+export const initTheme = (): WebTheme => {
   const stored = readStoredTheme()
-  let theme: Theme
+  let theme: WebTheme
 
   if (stored) {
     theme = stored
-  } else if (typeof window !== 'undefined' && 'matchMedia' in window) {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    theme = prefersDark ? 'dark' : 'light'
   } else {
-    theme = 'light'
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    theme = prefersDark ? WebTheme.Dark : WebTheme.Light
   }
 
   applyTheme(theme)
   return theme
 }
 
-export function setTheme(theme: Theme): void {
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
-  }
+export const setTheme = (theme: WebTheme) => {
+  window.localStorage.setItem(THEME_STORAGE_KEY, theme)
   applyTheme(theme)
+}
+
+const readStoredTheme = (): WebTheme | null => {
+  return window.localStorage.getItem(THEME_STORAGE_KEY) as WebTheme | null
+}
+
+const applyTheme = (theme: WebTheme): void => {
+  const root = document.documentElement
+  root.classList.remove('theme-light', 'theme-dark')
+
+  if (theme === WebTheme.Light) {
+    root.classList.add('theme-light')
+  } else if (theme === WebTheme.Dark) {
+    root.classList.add('theme-dark')
+  }
 }

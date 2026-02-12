@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import AppHeader from './components/AppHeader.vue'
-import SetPicker from './components/SetPicker.vue'
-import CardFilters from './components/CardFilters.vue'
-import CardGrid from './components/CardGrid.vue'
-import { cards, makeCardKey, sets } from './data'
-import type { Card } from './data/types'
-import { useCollectionStore } from './stores/collection'
+import AppHeader from '@/components/AppHeader.vue'
+import SetPicker from '@/components/SetPicker.vue'
+import CardFilters from '@/components/CardFilters.vue'
+import CardGrid from '@/components/CardGrid.vue'
+import { cards, getLocalizedName, makeCardKey, sets } from '@/data'
+import type { Card } from '@/data/types'
+import { useCollectionStore } from '@/stores/collection'
+import type { WebLocale } from './data/constants'
 
 const collection = useCollectionStore()
 const { locale } = useI18n()
@@ -23,7 +24,7 @@ const sortDir = ref<'asc' | 'desc'>('asc')
 
 const filteredCards = computed<Card[]>(() => {
   const query = searchQuery.value.trim().toLowerCase()
-  const currentLocale = (locale.value === 'ja' ? 'ja' : 'en') as 'en' | 'ja'
+  const currentLocale = locale.value as WebLocale
   const filtered = cards.filter((card) => {
     if (selectedSetId.value !== 'all' && card.setId !== selectedSetId.value) {
       return false
@@ -34,7 +35,7 @@ const filteredCards = computed<Card[]>(() => {
     }
 
     if (query) {
-      const name = currentLocale === 'ja' ? card.name.ja.toLowerCase() : card.name.en.toLowerCase()
+      const name = getLocalizedName(card.name, currentLocale)
       const matchesName = name.includes(query)
       const matchesDex = card.pokedexNumber.toString().includes(query)
       if (!matchesName && !matchesDex) {
@@ -63,14 +64,21 @@ const filteredCards = computed<Card[]>(() => {
   // Sorting
   const rarityOrder = Array.from(new Set(cards.map((c) => c.rarity))).sort()
 
+  // Map setId -> set index for set sorting (fallback to 0)
+  const setIndexMap = new Map<string, number>(
+    sets.map((s, i) => [s.id, typeof s.index === 'number' ? s.index : i]),
+  )
+
   const sorted = filtered.slice().sort((a, b) => {
     let cmp = 0
     if (sortBy.value === 'pokedex') {
       cmp = a.pokedexNumber - b.pokedexNumber
-    } else if (sortBy.value === 'name') {
-      const an = currentLocale === 'ja' ? a.name.ja : a.name.en
-      const bn = currentLocale === 'ja' ? b.name.ja : b.name.en
-      cmp = an.localeCompare(bn)
+    } else if (sortBy.value === 'set') {
+      const aSet = setIndexMap.get(a.setId) ?? 0
+      const bSet = setIndexMap.get(b.setId) ?? 0
+      if (aSet !== bSet) return aSet - bSet
+      // if same set, fall back to card id
+      cmp = a.id - b.id
     } else if (sortBy.value === 'rarity') {
       const ai = rarityOrder.indexOf(a.rarity)
       const bi = rarityOrder.indexOf(b.rarity)
@@ -129,7 +137,7 @@ function handleToggleOwned(key: string) {
         :sets="sets"
         v-model:selected-set-id="selectedSetId"
         v-model:selected-subset-id="selectedSubsetId"
-        :current-locale="locale as 'en' | 'ja'"
+        :current-locale="locale as WebLocale"
       />
 
       <CardFilters

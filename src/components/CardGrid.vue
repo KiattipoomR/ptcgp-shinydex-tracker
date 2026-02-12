@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Card } from '../data/types'
-import CardTile from './CardTile.vue'
+import type { Card } from '@/data/types'
+import CardTile from '@/components/CardTile.vue'
 
-const props = defineProps<{
+defineProps<{
   items: {
     card: Card
     storageKey: string
@@ -29,9 +29,7 @@ function onToggle(key: string) {
       @toggle="onToggle(item.storageKey)"
     />
   </div>
-  <p v-else class="empty">
-    No cards match your filters.
-  </p>
+  <p v-else class="empty">No cards match your filters.</p>
 </template>
 
 <style scoped>
@@ -46,4 +44,3 @@ function onToggle(key: string) {
   opacity: 0.8;
 }
 </style>
-

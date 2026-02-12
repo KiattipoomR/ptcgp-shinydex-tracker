@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
-import type { CardKeyParts } from '../data/types'
-import { makeCardKey } from '../data'
-
-const STORAGE_KEY = 'shinydex:owned'
+import type { CardKeyParts } from '@/data/types'
+import { makeCardKey } from '@/data'
+import { STORAGE_KEY } from '@/data/constants'
 
 type OwnedByKey = Record<string, boolean>
 
@@ -51,4 +50,3 @@ export const useCollectionStore = defineStore('collection', {
     },
   },
 })
-

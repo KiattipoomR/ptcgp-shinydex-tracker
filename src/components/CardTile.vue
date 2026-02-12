@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { Card } from '../data/types'
+import type { Card } from '@/data/types'
+import { getLocalizedName } from '@/data'
+import type { WebLocale } from '@/data/constants'
 
 const props = defineProps<{
   card: Card
@@ -14,9 +16,7 @@ const emit = defineEmits<{
 
 const { t, locale } = useI18n()
 
-const displayName = computed(() =>
-  locale.value === 'ja' ? props.card.name.ja : props.card.name.en,
-)
+const displayName = computed(() => getLocalizedName(props.card.name, locale.value as WebLocale))
 
 function onToggle(event?: Event) {
   if (event) event.stopPropagation()

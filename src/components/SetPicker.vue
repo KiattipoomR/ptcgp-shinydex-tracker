@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { Set } from '../data/types'
+import type { Set } from '@/data/types'
+import type { WebLocale } from '@/data/constants'
+import { getLocalizedName } from '@/data'
 
 const props = defineProps<{
   sets: Set[]
   selectedSetId: string
   selectedSubsetId: string
-  currentLocale: 'en' | 'ja'
+  currentLocale: WebLocale
 }>()
 
 const emit = defineEmits<{
@@ -22,20 +24,16 @@ const subsetOptions = computed(() => {
   return set?.subsets ?? []
 })
 
-function onSetChange(event: Event) {
+const onSetChange = (event: Event) => {
   const target = event.target as HTMLSelectElement
   const value = target.value
   emit('update:selectedSetId', value)
   emit('update:selectedSubsetId', 'all')
 }
 
-function onSubsetChange(event: Event) {
+const onSubsetChange = (event: Event) => {
   const target = event.target as HTMLSelectElement
   emit('update:selectedSubsetId', target.value)
-}
-
-function localizedName(name: { en: string; ja: string }) {
-  return props.currentLocale === 'ja' ? name.ja : name.en
 }
 </script>
 
@@ -50,7 +48,7 @@ function localizedName(name: { en: string; ja: string }) {
           {{ t('sets.all') }}
         </option>
         <option v-for="set in sets" :key="set.id" :value="set.id">
-          {{ localizedName(set.name) }}
+          {{ getLocalizedName(set.name, props.currentLocale) }}
         </option>
       </select>
     </label>
@@ -63,12 +61,8 @@ function localizedName(name: { en: string; ja: string }) {
         <option value="all">
           {{ t('sets.subset_all') }}
         </option>
-        <option
-          v-for="subset in subsetOptions"
-          :key="subset.id"
-          :value="subset.id"
-        >
-          {{ localizedName(subset.name) }}
+        <option v-for="subset in subsetOptions" :key="subset.id" :value="subset.id">
+          {{ getLocalizedName(subset.name, props.currentLocale) }}
         </option>
       </select>
     </label>
@@ -102,4 +96,3 @@ function localizedName(name: { en: string; ja: string }) {
   color: inherit;
 }
 </style>
-

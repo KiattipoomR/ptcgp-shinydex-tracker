@@ -84,8 +84,10 @@ function onResetSort() {
           @change="(e) => emit('update:sortBy', (e.target as HTMLSelectElement).value)"
         >
           <option value="pokedex">{{ t('filters.sort_by_pokedex') }}</option>
-          <option value="name">{{ t('filters.sort_by_name') }}</option>
-          <option value="rarity">{{ t('filters.sort_by_rarity') }}</option>
+          <option value="set">{{ t('filters.sort_by_set') }}</option>
+          <option value="rarity" v-if="selectedRarity !== 'all'">
+            {{ t('filters.sort_by_rarity') }}
+          </option>
         </select>
 
         <select
