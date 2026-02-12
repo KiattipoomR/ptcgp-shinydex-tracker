@@ -1,8 +1,95 @@
 [
   {
+    "id": 50,
+    "setId": "P-A",
+    "rarity": "P",
+    "pokedexNumber": 13,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_90_005090_00_MOTOTOKAGE_S.webp",
+    "name": {
+      "en": "Cyclizar",
+      "ja": "モトトカゲ"
+    }
+  },
+  {
+    "id": 51,
+    "setId": "P-A",
+    "rarity": "P",
+    "pokedexNumber": 150,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_90_001290_00_MEWTWOex_SSR.webp",
+    "name": {
+      "en": "Mewtwo ex",
+      "ja": "ミュウツー ex"
+    }
+  },
+  {
+    "id": 97,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 13,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005210_00_BEEDLE_S.webp",
+    "name": {
+      "en": "Weedle",
+      "ja": "ビードル"
+    }
+  },
+  {
+    "id": 98,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 14,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005220_00_COCOON_S.webp",
+    "name": {
+      "en": "Kakuna",
+      "ja": "コクーン"
+    }
+  },
+  {
+    "id": 99,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 4,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005270_00_HITOKAGE_S.webp",
+    "name": {
+      "en": "Charmander",
+      "ja": "ヒトカゲ"
+    }
+  },
+  {
+    "id": 100,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 5,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005280_00_LIZARDO_S.webp",
+    "name": {
+      "en": "Charmeleon",
+      "ja": "リザード"
+    }
+  },
+  {
+    "id": 101,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 960,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005370_00_UMIDIGDA_S.webp",
+    "name": {
+      "en": "Wiglett",
+      "ja": "ウミディグダ"
+    }
+  },
+  {
+    "id": 102,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 977,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005390_00_HEYRUSHER_S.webp",
+    "name": {
+      "en": "Dondozo",
+      "ja": "ヘイラッシャ"
+    }
+  },
+  {
     "id": 103,
     "setId": "A2b",
-    "subsetId": "A2b_1",
     "rarity": "S",
     "pokedexNumber": 417,
     "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005060_00_PACHIRISU_S.webp",
@@ -12,9 +99,52 @@
     }
   },
   {
+    "id": 104,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 447,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005070_00_RIOLU_S.webp",
+    "name": {
+      "en": "Riolu",
+      "ja": "リオル"
+    }
+  },
+  {
+    "id": 105,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 965,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005700_00_BURORON_S.webp",
+    "name": {
+      "en": "Varoom",
+      "ja": "ブロロン"
+    }
+  },
+  {
+    "id": 106,
+    "setId": "A2b",
+    "rarity": "S",
+    "pokedexNumber": 966,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005710_00_BUROROROOM_S.webp",
+    "name": {
+      "en": "Revavroom",
+      "ja": "ブロロローム"
+    }
+  },
+  {
+    "id": 107,
+    "setId": "A2b",
+    "rarity": "SSR",
+    "pokedexNumber": 15,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005230_01_SPEARex_SSR.webp",
+    "name": {
+      "en": "Beedrill ex",
+      "ja": "スピアー ex"
+    }
+  },
+  {
     "id": 108,
     "setId": "A2b",
-    "subsetId": "A2b_2",
     "rarity": "SSR",
     "pokedexNumber": 6,
     "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005290_01_LIZARDONex_SSR.webp",
@@ -24,9 +154,19 @@
     }
   },
   {
+    "id": 109,
+    "setId": "A2b",
+    "rarity": "SSR",
+    "pokedexNumber": 961,
+    "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005380_01_UMITRIOex_SSR.webp",
+    "name": {
+      "en": "Wugtrio ex",
+      "ja": "ウミトリオ ex"
+    }
+  },
+  {
     "id": 110,
     "setId": "A2b",
-    "subsetId": "A2b_3",
     "rarity": "SSR",
     "pokedexNumber": 448,
     "imageUrl": "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_20_005580_01_LUCARIOex_SSR.webp",
@@ -36,4 +176,3 @@
     }
   }
 ]
-
