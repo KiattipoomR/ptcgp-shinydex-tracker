@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+
 import { useI18n } from 'vue-i18n'
+
 import AppHeader from '@/components/AppHeader.vue'
-import SetPicker from '@/components/SetPicker.vue'
 import CardFilters from '@/components/CardFilters.vue'
 import CardGrid from '@/components/CardGrid.vue'
-import { cards, getLocalizedName, makeCardKey, sets } from '@/data'
+import SetPicker from '@/components/SetPicker.vue'
+import { cards, getLocalizedName, makeCardKey, sets, WebLocale } from '@/data'
 import type { Card } from '@/data/types'
 import { useCollectionStore } from '@/stores/collection'
-import type { WebLocale } from './data/constants'
 
 const collection = useCollectionStore()
 const { locale } = useI18n()
@@ -19,7 +20,7 @@ const searchQuery = ref<string>('')
 const missingOnly = ref<boolean>(false)
 
 const selectedRarity = ref<string>('all')
-const sortBy = ref<string>('pokedex')
+const sortBy = ref<string>('set')
 const sortDir = ref<'asc' | 'desc'>('asc')
 
 const filteredCards = computed<Card[]>(() => {
@@ -123,7 +124,7 @@ const ownedCards = computed(() => {
   }, 0)
 })
 
-function handleToggleOwned(key: string) {
+const handleToggleOwned = (key: string) => {
   collection.toggleOwnedByKey(key)
 }
 </script>

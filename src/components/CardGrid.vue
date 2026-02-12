@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Card } from '@/data/types'
 import CardTile from '@/components/CardTile.vue'
+import type { Card } from '@/data/types'
 
 defineProps<{
   items: {
@@ -14,7 +14,7 @@ const emit = defineEmits<{
   (e: 'toggle-owned', key: string): void
 }>()
 
-function onToggle(key: string) {
+const onToggle = (key: string) => {
   emit('toggle-owned', key)
 }
 </script>
@@ -35,7 +35,7 @@ function onToggle(key: string) {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
 }
 

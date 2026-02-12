@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { useI18n } from 'vue-i18n'
+
+import { getLocalizedName, WebLocale } from '@/data'
 import type { Set } from '@/data/types'
-import type { WebLocale } from '@/data/constants'
-import { getLocalizedName } from '@/data'
 
 const props = defineProps<{
   sets: Set[]

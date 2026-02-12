@@ -20,17 +20,17 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-function onSearchInput(event: Event) {
+const onSearchInput = (event: Event) => {
   const target = event.target as HTMLInputElement
   emit('update:searchQuery', target.value)
 }
 
-function onMissingToggle(event: Event) {
+const onMissingToggle = (event: Event) => {
   const target = event.target as HTMLInputElement
   emit('update:missingOnly', target.checked)
 }
 
-function onResetSort() {
+const onResetSort = () => {
   emit('update:sortBy', 'pokedex')
   emit('update:sortDir', 'asc')
 }
@@ -85,7 +85,7 @@ function onResetSort() {
         >
           <option value="pokedex">{{ t('filters.sort_by_pokedex') }}</option>
           <option value="set">{{ t('filters.sort_by_set') }}</option>
-          <option value="rarity" v-if="selectedRarity !== 'all'">
+          <option value="rarity" v-if="selectedRarity === 'all'">
             {{ t('filters.sort_by_rarity') }}
           </option>
         </select>

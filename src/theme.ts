@@ -1,4 +1,5 @@
-import { THEME_STORAGE_KEY, WebTheme } from '@/data/constants'
+import { WebTheme } from '@/data'
+import { THEME_STORAGE_KEY } from '@/stores/constants'
 
 export const initTheme = (): WebTheme => {
   const stored = readStoredTheme()

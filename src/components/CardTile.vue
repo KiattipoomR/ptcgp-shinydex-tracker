@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { useI18n } from 'vue-i18n'
+
+import { getLocalizedName, WebLocale } from '@/data'
 import type { Card } from '@/data/types'
-import { getLocalizedName } from '@/data'
-import type { WebLocale } from '@/data/constants'
 
 const props = defineProps<{
   card: Card
@@ -18,12 +19,12 @@ const { t, locale } = useI18n()
 
 const displayName = computed(() => getLocalizedName(props.card.name, locale.value as WebLocale))
 
-function onToggle(event?: Event) {
+const onToggle = (event?: Event) => {
   if (event) event.stopPropagation()
   emit('toggle')
 }
 
-function onKeyDown(event: KeyboardEvent) {
+const onKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault()
     emit('toggle')

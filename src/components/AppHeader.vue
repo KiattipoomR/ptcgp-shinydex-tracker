@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useI18n, type Locale } from 'vue-i18n'
+
+import { useI18n } from 'vue-i18n'
+
+import { WebLocale, WebTheme } from '@/data'
+import { LANGUAGE_STORAGE_KEY } from '@/stores/constants'
 import { initTheme, setTheme } from '@/theme'
-import { LANGUAGE_STORAGE_KEY, WebTheme } from '@/data/constants'
 
 const props = defineProps<{
   totalCards: number
@@ -20,7 +23,7 @@ const summaryText = computed(() =>
   }),
 )
 
-const switchLanguage = (lang: Locale) => {
+const switchLanguage = (lang: WebLocale) => {
   locale.value = lang
   window.localStorage.setItem(LANGUAGE_STORAGE_KEY, lang)
 }
@@ -52,10 +55,10 @@ onMounted(() => {
         <select
           class="lang-select"
           :value="locale"
-          @change="(e) => switchLanguage((e.target as HTMLSelectElement).value as 'en' | 'ja')"
+          @change="(e) => switchLanguage((e.target as HTMLSelectElement).value as WebLocale)"
         >
-          <option value="en">{{ t('header.language_en') }}</option>
-          <option value="ja">{{ t('header.language_ja') }}</option>
+          <option :value="WebLocale.English">{{ t('header.language_en') }}</option>
+          <option :value="WebLocale.Japanese">{{ t('header.language_ja') }}</option>
         </select>
       </div>
 

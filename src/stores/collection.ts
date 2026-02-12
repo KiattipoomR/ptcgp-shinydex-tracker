@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
-import type { CardKeyParts } from '@/data/types'
+
 import { makeCardKey } from '@/data'
-import { STORAGE_KEY } from '@/data/constants'
+import type { CardKeyParts } from '@/data/types'
+
+import { STORAGE_KEY } from './constants'
 
 type OwnedByKey = Record<string, boolean>
 
-function loadOwned(): OwnedByKey {
-  if (typeof window === 'undefined') return {}
-
+export const loadOwned = (): OwnedByKey => {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return {}
@@ -22,8 +22,7 @@ function loadOwned(): OwnedByKey {
   return {}
 }
 
-function saveOwned(data: OwnedByKey) {
-  if (typeof window === 'undefined') return
+export const saveOwned = (data: OwnedByKey) => {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   } catch {

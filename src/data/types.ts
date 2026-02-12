@@ -1,4 +1,4 @@
-import type { WebLocale } from './constants'
+import { WebLocale } from './index'
 
 export type Set = {
   id: string
